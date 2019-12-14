@@ -22,12 +22,10 @@ function Cell({
         ? (
           <div className="animated bounceIn">
             <Icon
-              type={value}
+              type={'x'}
               aria-hidden
               size={50}
-              color={value === 'o'
-                ? 'var(--primary-color)'
-                : 'var(--secondary-color)'}
+              color={'var(--primary-color)'}
             />
           </div>
         ) : null}

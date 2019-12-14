@@ -55,7 +55,7 @@ function Score() {
       <div className="score__cell">
         <div className="score__img">
           <Icon
-            type="o"
+            type="x"
             color="var(--primary-color)"
             size={40}
           />
@@ -71,7 +71,7 @@ function Score() {
         <div className="score__img">
           <Icon
             type="x"
-            color="var(--secondary-color)"
+            color="var(--primary-color)"
             size={40}
           />
         </div>
