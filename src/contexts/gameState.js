@@ -3,16 +3,21 @@ import { checkResult } from '../libs/helpers';
 
 export const GAME_STATE = {
   IDLE: 'IDLE',
-  YOUR_TOURN: 'YOUR_TURN',
+  YOUR_TURN: 'YOUR_TURN',
   OPPONENTS_TURN: 'OPPONENTS_TURN',
   WIN: 'WIN',
   DEFEAT: 'DEFEAT',
   DRAW: 'DRAW',
+  MATCH_WIN: 'MATCH_WIN',
+  MATCH_DEFEAT: 'MATCH_DEFEAT',
+  MATCH_DRAW: 'MATCH_DRAW',
+  MATCH_IN: 'MATCH_IN'
 };
 
 export const GAME_STATE_ACTION_TYPE = {
   CHECK: 'CHECK',
   RESET: 'RESET',
+  MATCH_RESET: 'MATCH_RESET',
   RESET_SCORE: 'RESET_SCORE',
   CHANGE_DIFFICULTY: 'CHANGE_DIFFICULTY',
 };
@@ -28,6 +33,8 @@ export const defaultValue = {
     you: 0,
     opponent: 0,
   },
+  match: 0,
+  matchState: GAME_STATE.MATCH_IN,
   round: 0,
   board: {
     a1: null, b1: null, c1: null,
@@ -56,7 +63,7 @@ export const dispatcher = (state, action) => {
       newState.round += 1;
 
       if (action.payload.value === 'o') newState.state = GAME_STATE.OPPONENTS_TURN;
-      if (action.payload.value === 'x') newState.state = GAME_STATE.YOUR_TOURN;
+      if (action.payload.value === 'x') newState.state = GAME_STATE.YOUR_TURN;
 
       const result = checkResult(newState.board);
       const won = result && result.winner === 'o';
@@ -79,6 +86,19 @@ export const dispatcher = (state, action) => {
 
       if (draw) newState.state = GAME_STATE.DRAW;
 
+      if (won || lost || draw) {
+        newState.match += 1;
+
+        if (newState.match === 3 || Math.abs(newState.score.you - newState.score.opponent) > 1) {
+          if (newState.score.you > newState.score.opponent)
+            newState.matchState = GAME_STATE.MATCH_WIN;
+          else if (newState.score.you < newState.score.opponent)
+            newState.matchState = GAME_STATE.MATCH_DEFEAT;
+          else
+            newState.matchState = GAME_STATE.MATCH_DRAW;
+        }
+      }
+
       return newState;
     }
 
@@ -93,6 +113,26 @@ export const dispatcher = (state, action) => {
       };
       newState.state = GAME_STATE.IDLE;
       newState.winnerCells = [];
+      return newState;
+    }
+
+    case GAME_STATE_ACTION_TYPE.MATCH_RESET:
+    {
+      const newState = {...defaultValue};
+
+      newState.board = {
+        a1: null, b1: null, c1: null,
+        a2: null, b2: null, c2: null,
+        a3: null, b3: null, c3: null,
+      };
+
+      newState.winnerCells = [];
+
+      newState.score = {
+        you: 0,
+        opponent: 0,
+      };
+      
       return newState;
     }
 

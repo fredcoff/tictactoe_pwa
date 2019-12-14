@@ -1,63 +1,55 @@
 import React, { useContext } from 'react';
 import GameStateContext, { GAME_STATE, GAME_STATE_ACTION_TYPE } from '../../contexts/gameState';
-import './status.css';
+import './match-status.css';
 
-function Status() {
+function MatchStatus() {
   const [gameState, dispatchGameState] = useContext(GameStateContext);
 
-  function reset() {
+  function resetMatch() {
     dispatchGameState({
-      type: GAME_STATE_ACTION_TYPE.RESET,
+      type: GAME_STATE_ACTION_TYPE.MATCH_RESET,
     });
   }
 
   function phrase() {
-    if (gameState.matchState !== GAME_STATE.MATCH_IN)
-      return `${gameState.score.you} : ${gameState.score.opponent}`;
-    
-    switch (gameState.state) {
-      case GAME_STATE.IDLE:
-        return 'Whenever you\'re ready!';
-      case GAME_STATE.YOUR_TURN:
-        return 'Your turn!';
-      case GAME_STATE.WIN:
-        return 'Victory!';
-      case GAME_STATE.DEFEAT:
-        return 'You were defeated!';
-      case GAME_STATE.DRAW:
-        return 'It\'s a draw!';
+    switch (gameState.matchState) {
+      case GAME_STATE.MATCH_IDLE:
+        return '';
+      case GAME_STATE.MATCH_WIN:
+        return 'You Win!';
+      case GAME_STATE.MATCH_DEFEAT:
+        return 'You Lose!';
+      case GAME_STATE.MATCH_DRAW:
+        return 'Draw!';
       default:
         return '';
     }
   }
 
   function ResetButton() {
-    if (gameState.matchState !== GAME_STATE.MATCH_IN)
-      return null;
-    
-    switch (gameState.state) {
-      case GAME_STATE.WIN:
+    switch (gameState.matchState) {
+      case GAME_STATE.MATCH_WIN:
         return (
           <button
-            onClick={reset}
+            onClick={resetMatch}
             className="status__reset-btn"
           >
             Play again!
           </button>
         );
-      case GAME_STATE.DEFEAT:
+      case GAME_STATE.MATCH_DEFEAT:
         return (
           <button
-            onClick={reset}
+            onClick={resetMatch}
             className="status__reset-btn status__reset-btn--red"
           >
             Play again!
           </button>
         );
-      case GAME_STATE.DRAW:
+      case GAME_STATE.MATCH_DRAW:
         return (
           <button
-            onClick={reset}
+            onClick={resetMatch}
             className="status__reset-btn status__reset-btn--red"
           >
             Play again!
@@ -80,4 +72,4 @@ function Status() {
   </div>
 };
 
-export default Status;
+export default MatchStatus;

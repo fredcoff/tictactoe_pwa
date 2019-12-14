@@ -34,7 +34,7 @@ function GameGrid() {
     }, 1000);
   }, [gameState, dispatchGameState]);
 
-  const disabledGrid = [GAME_STATE.IDLE, GAME_STATE.YOUR_TOURN]
+  const disabledGrid = [GAME_STATE.IDLE, GAME_STATE.YOUR_TURN]
     .indexOf(gameState.state) === -1;
 
   const someonesVictory = [GAME_STATE.WIN, GAME_STATE.DEFEAT]
