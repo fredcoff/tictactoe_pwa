@@ -37,7 +37,7 @@ function Cell({
 
 Cell.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.oneOf(['x', 'o']),
+  value: PropTypes.oneOf(['x', 'o', 'b']),
   onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   opaque: PropTypes.bool,

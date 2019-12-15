@@ -28,6 +28,22 @@ export const GAME_DIFFICULTIES = {
   HARD: 'HARD',
 };
 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+function makeBlacks(board) {
+  const keys = Object.keys(board);
+  
+  shuffle(keys);
+  board[keys[0]] = 'b';
+  board[keys[1]] = 'b';
+
+  return board;
+}
+
 export const defaultValue = {
   score: {
     you: 0,
@@ -36,11 +52,11 @@ export const defaultValue = {
   match: 0,
   matchState: GAME_STATE.MATCH_IN,
   round: 0,
-  board: {
+  board: makeBlacks({
     a1: null, b1: null, c1: null, d1: null,
     a2: null, b2: null, c2: null, d2: null,
     a3: null, b3: null, c3: null, d3: null,
-  },
+  }),
   winnerCells: [],
   state: GAME_STATE.IDLE,
   difficulty: localStorage.getItem('difficulty') || GAME_DIFFICULTIES.HARD,
@@ -68,7 +84,7 @@ export const dispatcher = (state, action) => {
       const result = checkResult(newState.board);
       const won = result && result.winner === 'o';
       const lost = result && result.winner === 'x';
-      const draw = !result && newState.round === 12;
+      const draw = !result && newState.round === 10;
 
       if (won || lost) {
         newState.winnerCells = result.cells;
@@ -106,11 +122,11 @@ export const dispatcher = (state, action) => {
     {
       const newState = {...state};
       newState.round = 0;
-      newState.board = {
+      newState.board = makeBlacks({
         a1: null, b1: null, c1: null, d1: null,
         a2: null, b2: null, c2: null, d2: null,
         a3: null, b3: null, c3: null, d3: null,
-      };
+      });
       newState.state = GAME_STATE.IDLE;
       newState.winnerCells = [];
       return newState;
@@ -120,11 +136,11 @@ export const dispatcher = (state, action) => {
     {
       const newState = {...defaultValue};
 
-      newState.board = {
+      newState.board = makeBlacks({
         a1: null, b1: null, c1: null, d1: null,
         a2: null, b2: null, c2: null, d2: null,
         a3: null, b3: null, c3: null, d3: null,
-      };
+      });
 
       newState.winnerCells = [];
 
