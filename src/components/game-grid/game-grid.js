@@ -23,11 +23,11 @@ function GameGrid() {
   useEffect(() => {
     if (gameState.state !== GAME_STATE.OPPONENTS_TURN) return;
     setTimeout(() => {
-      const { board, difficulty } = gameState;
+      const { board, difficulty, round } = gameState;
       dispatchGameState({
         type: GAME_STATE_ACTION_TYPE.CHECK,
         payload: {
-          target: ai(board, difficulty),
+          target: ai(board, difficulty, round),
           value: 'x',
         },
       });

@@ -66,8 +66,8 @@ export const dispatcher = (state, action) => {
       if (action.payload.value === 'x') newState.state = GAME_STATE.YOUR_TURN;
 
       const result = checkResult(newState.board);
-      const won = result && result.winner === 'o';
-      const lost = result && result.winner === 'x';
+      const won = result && result.loser === 'x';
+      const lost = result && result.loser === 'o';
       const draw = !result && newState.round === 9;
 
       if (won || lost) {
