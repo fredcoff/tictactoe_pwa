@@ -1,5 +1,28 @@
 import { GAME_DIFFICULTIES } from '../contexts/gameState';
 
+const pairs = [
+  // rows
+  ['a1', 'b1', 'c1'],
+  ['a2', 'b2', 'c2'],
+  ['a3', 'b3', 'c3'],
+
+  // columns
+  ['a1', 'a2', 'a3'],
+  ['b1', 'b2', 'b3'],
+  ['c1', 'c2', 'c3'],
+
+  // transversal
+  ['a1', 'b2', 'c3'],
+  ['a3', 'b2', 'c1'],
+
+  ['d1', 'd2', 'd3'],
+  ['b1', 'c1', 'd1'],
+  ['b2', 'c2', 'd2'],
+  ['b3', 'c3', 'd3'],
+  ['b1', 'c2', 'd3'],
+  ['d1', 'c2', 'b3'],
+];
+
 function checkImminentWin(board) {
   function isImminentWin(xCellname, yCellname, zCellname) {
     const x = board[xCellname];
@@ -27,21 +50,7 @@ function checkImminentWin(board) {
     return false;
   }
 
-  const possibilities = [
-    // lines
-    isImminentWin('a1', 'b1', 'c1'),
-    isImminentWin('a2', 'b2', 'c2'),
-    isImminentWin('a3', 'b3', 'c3'),
-
-    // columns
-    isImminentWin('a1', 'a2', 'a3'),
-    isImminentWin('b1', 'b2', 'b3'),
-    isImminentWin('c1', 'c2', 'c3'),
-
-    // transversal
-    isImminentWin('a1', 'b2', 'c3'),
-    isImminentWin('a3', 'b2', 'c1'),
-  ].filter(p => p !== false);
+  const possibilities = pairs.map(p => (isImminentWin(...p))).filter(p => p !== false);
 
   if (possibilities.length > 0) {
     return possibilities[Math.floor(Math.random() * possibilities.length)];
@@ -77,21 +86,7 @@ function preventImminentDanger(board) {
     return false;
   }
 
-  const possibilities = [
-    // lines
-    isImminentDanger('a1', 'b1', 'c1'),
-    isImminentDanger('a2', 'b2', 'c2'),
-    isImminentDanger('a3', 'b3', 'c3'),
-
-    // columns
-    isImminentDanger('a1', 'a2', 'a3'),
-    isImminentDanger('b1', 'b2', 'b3'),
-    isImminentDanger('c1', 'c2', 'c3'),
-
-    // transversal
-    isImminentDanger('a1', 'b2', 'c3'),
-    isImminentDanger('a3', 'b2', 'c1'),
-  ].filter(p => p !== false);
+  const possibilities = pairs.map(p => (isImminentDanger(...p))).filter(p => p !== false);
 
   if (possibilities.length > 0) {
     return possibilities[Math.floor(Math.random() * possibilities.length)];
@@ -127,21 +122,7 @@ function checkPossibleWin(board) {
     return false;
   }
 
-  const possibilities = [
-    // lines
-    isPossibleWin('a1', 'b1', 'c1'),
-    isPossibleWin('a2', 'b2', 'c2'),
-    isPossibleWin('a3', 'b3', 'c3'),
-
-    // columns
-    isPossibleWin('a1', 'a2', 'a3'),
-    isPossibleWin('b1', 'b2', 'b3'),
-    isPossibleWin('c1', 'c2', 'c3'),
-
-    // transversal
-    isPossibleWin('a1', 'b2', 'c3'),
-    isPossibleWin('a3', 'b2', 'c1'),
-  ].filter(p => p !== false);
+  const possibilities = pairs.map(p => (isPossibleWin(...p))).filter(p => p !== false);
 
   if (possibilities.length > 0) {
     return possibilities[Math.floor(Math.random() * possibilities.length)];
@@ -152,7 +133,8 @@ function checkPossibleWin(board) {
 
 function checkTheMiddle(board) {
   return board.b2 === null
-    ? 'b2' : false;
+    ? 'b2' : board.c2 === null
+    ? 'c2' : false;
 }
 
 function getRandomCell(board) {
@@ -200,7 +182,7 @@ export default function(board, difficulty) {
   //    with your mark, and two are empty
   //
   // 4. Check the middle
-  //    Check the B2 cell if its not checked
+  //    Check the B2, C2 cell if its not checked
   //    To prevent the most known plays
   //
   // 5. Random

@@ -71,6 +71,15 @@ function GameGrid() {
       </div>
       <div className="game-grid__cell">
         <Cell
+          name="D1"
+          onClick={() => play('d1')}
+          value={gameState.board.d1}
+          disabled={disabledGrid}
+          opaque={someonesVictory && gameState.winnerCells.indexOf('d1') === -1}
+        />
+      </div>
+      <div className="game-grid__cell">
+        <Cell
           name="A2"
           onClick={() => play('a2')}
           value={gameState.board.a2}
@@ -98,6 +107,15 @@ function GameGrid() {
       </div>
       <div className="game-grid__cell">
         <Cell
+          name="D2"
+          onClick={() => play('d2')}
+          value={gameState.board.d2}
+          disabled={disabledGrid}
+          opaque={someonesVictory && gameState.winnerCells.indexOf('d2') === -1}
+        />
+      </div>
+      <div className="game-grid__cell">
+        <Cell
           name="A3"
           onClick={() => play('a3')}
           value={gameState.board.a3}
@@ -121,6 +139,15 @@ function GameGrid() {
           value={gameState.board.c3}
           disabled={disabledGrid}
           opaque={someonesVictory && gameState.winnerCells.indexOf('c3') === -1}
+        />
+      </div>
+      <div className="game-grid__cell">
+        <Cell
+          name="D3"
+          onClick={() => play('d3')}
+          value={gameState.board.d3}
+          disabled={disabledGrid}
+          opaque={someonesVictory && gameState.winnerCells.indexOf('d3') === -1}
         />
       </div>
     </div>

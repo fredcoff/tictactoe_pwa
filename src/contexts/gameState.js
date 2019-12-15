@@ -37,9 +37,9 @@ export const defaultValue = {
   matchState: GAME_STATE.MATCH_IN,
   round: 0,
   board: {
-    a1: null, b1: null, c1: null,
-    a2: null, b2: null, c2: null,
-    a3: null, b3: null, c3: null,
+    a1: null, b1: null, c1: null, d1: null,
+    a2: null, b2: null, c2: null, d2: null,
+    a3: null, b3: null, c3: null, d3: null,
   },
   winnerCells: [],
   state: GAME_STATE.IDLE,
@@ -68,7 +68,7 @@ export const dispatcher = (state, action) => {
       const result = checkResult(newState.board);
       const won = result && result.winner === 'o';
       const lost = result && result.winner === 'x';
-      const draw = !result && newState.round === 9;
+      const draw = !result && newState.round === 12;
 
       if (won || lost) {
         newState.winnerCells = result.cells;
@@ -107,9 +107,9 @@ export const dispatcher = (state, action) => {
       const newState = {...state};
       newState.round = 0;
       newState.board = {
-        a1: null, b1: null, c1: null,
-        a2: null, b2: null, c2: null,
-        a3: null, b3: null, c3: null,
+        a1: null, b1: null, c1: null, d1: null,
+        a2: null, b2: null, c2: null, d2: null,
+        a3: null, b3: null, c3: null, d3: null,
       };
       newState.state = GAME_STATE.IDLE;
       newState.winnerCells = [];
@@ -121,9 +121,9 @@ export const dispatcher = (state, action) => {
       const newState = {...defaultValue};
 
       newState.board = {
-        a1: null, b1: null, c1: null,
-        a2: null, b2: null, c2: null,
-        a3: null, b3: null, c3: null,
+        a1: null, b1: null, c1: null, d1: null,
+        a2: null, b2: null, c2: null, d2: null,
+        a3: null, b3: null, c3: null, d3: null,
       };
 
       newState.winnerCells = [];

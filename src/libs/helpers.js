@@ -1,8 +1,8 @@
 export function checkResult(board) {
   const {
-    a1, b1, c1,
-    a2, b2, c2,
-    a3, b3, c3,
+    a1, b1, c1, d1,
+    a2, b2, c2, d2,
+    a3, b3, c3, d3,
   } = board;
 
   function isEqual(x, y, z) {
@@ -50,6 +50,36 @@ export function checkResult(board) {
   if (isEqual(a3, b2, c1)) return {
     winner: a3,
     cells: ['a3', 'b2', 'c1'],
+  };
+
+  if (isEqual(d1, d2, d3)) return {
+    winner: d1,
+    cells: ['d1', 'd2', 'd3'],
+  };
+
+  if (isEqual(b1, c1, d1)) return {
+    winner: b1,
+    cells: ['b1', 'c1', 'd1'],
+  };
+
+  if (isEqual(b2, c2, d2)) return {
+    winner: b2,
+    cells: ['b2', 'c2', 'd2'],
+  };
+
+  if (isEqual(b3, c3, d3)) return {
+    winner: b3,
+    cells: ['b3', 'c3', 'd3'],
+  };
+
+  if (isEqual(b1, c2, d3)) return {
+    winner: b1,
+    cells: ['b1', 'c2', 'd3'],
+  };
+
+  if (isEqual(d1, c2, b3)) return {
+    winner: d1,
+    cells: ['d1', 'c2', 'b3'],
   };
 
   return null;
