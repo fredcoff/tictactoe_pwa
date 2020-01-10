@@ -72,6 +72,7 @@ function App() {
           <div className="app__content">
             <Game />
           </div>
+          { /*
           <div className="app__menu-button">
             <Button
               onClick={() => setMenu(true)}
@@ -84,6 +85,7 @@ function App() {
               />
             </Button>
           </div>
+          */ }
         </div>
       </GameStateContext.Provider>
     </DarkThemeContext.Provider>
