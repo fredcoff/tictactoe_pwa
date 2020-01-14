@@ -1,86 +1,22 @@
-export function checkResult(board) {
-  const {
-    a1, b1, c1, d1,
-    a2, b2, c2, d2,
-    a3, b3, c3, d3,
-  } = board;
+import { pairs } from './ai';
 
-  function isEqual(x, y, z) {
+export function checkResult(board) {
+
+  function isEqual(x, y, z, w) {
     if (x === null
       || y === null
-      || z === null) return false;
-    return x === y && x === z;
+      || z === null
+      || w === null) return false;
+    return x === y && x === z && x === w;
   }
 
-  if (isEqual(a1, b1, c1)) return {
-    winner: a1,
-    cells: ['a1', 'b1', 'c1'],
-  };
-
-  if (isEqual(a2, b2, c2)) return {
-    winner: a2,
-    cells: ['a2', 'b2', 'c2'],
-  };
-
-  if (isEqual(a3, b3, c3)) return {
-    winner: a3,
-    cells: ['a3', 'b3', 'c3'],
-  };
-
-  if (isEqual(a1, a2, a3)) return {
-    winner: a1,
-    cells: ['a1', 'a2', 'a3'],
-  };
-
-  if (isEqual(b1, b2, b3)) return {
-    winner: b1,
-    cells: ['b1', 'b2', 'b3'],
-  };
-
-  if (isEqual(c1, c2, c3)) return {
-    winner: c1,
-    cells: ['c1', 'c2', 'c3'],
-  };
-
-  if (isEqual(a1, b2, c3)) return {
-    winner: a1,
-    cells: ['a1', 'b2', 'c3'],
-  };
-
-  if (isEqual(a3, b2, c1)) return {
-    winner: a3,
-    cells: ['a3', 'b2', 'c1'],
-  };
-
-  if (isEqual(d1, d2, d3)) return {
-    winner: d1,
-    cells: ['d1', 'd2', 'd3'],
-  };
-
-  if (isEqual(b1, c1, d1)) return {
-    winner: b1,
-    cells: ['b1', 'c1', 'd1'],
-  };
-
-  if (isEqual(b2, c2, d2)) return {
-    winner: b2,
-    cells: ['b2', 'c2', 'd2'],
-  };
-
-  if (isEqual(b3, c3, d3)) return {
-    winner: b3,
-    cells: ['b3', 'c3', 'd3'],
-  };
-
-  if (isEqual(b1, c2, d3)) return {
-    winner: b1,
-    cells: ['b1', 'c2', 'd3'],
-  };
-
-  if (isEqual(d1, c2, b3)) return {
-    winner: d1,
-    cells: ['d1', 'c2', 'b3'],
-  };
+  for (let pair of pairs) {
+    if (isEqual(board[pair[0]], board[pair[1]], board[pair[2]], board[pair[3]])) 
+      return {
+        winner: board[pair[0]],
+        cells: pair,
+      };
+  }
 
   return null;
 }

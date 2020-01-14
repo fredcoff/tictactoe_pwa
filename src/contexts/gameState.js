@@ -45,11 +45,22 @@ export const defaultValue = {
     a1: null, b1: null, c1: null, d1: null,
     a2: null, b2: null, c2: null, d2: null,
     a3: null, b3: null, c3: null, d3: null,
+    a4: null, b4: null, c4: null, d4: null,
   },
   winnerCells: [],
   state: GAME_STATE.IDLE,
   difficulty: localStorage.getItem('difficulty') || GAME_DIFFICULTIES.HARD,
 };
+
+const roundMatrix = {
+  a1: 0, b1: 0, c1: 0, d1: 0,
+  a2: 0, b2: 0, c2: 0, d2: 0,
+  a3: 0, b3: 0, c3: 0, d3: 0,
+  a4: 0, b4: 0, c4: 0, d4: 0,
+};
+
+const disappearAfter = 5;
+
 
 export const dispatcher = (state, action) => {
   switch (action.type) {
@@ -61,7 +72,10 @@ export const dispatcher = (state, action) => {
     if (!action.payload) throw new Error('payload is required');
     if (Object.keys(defaultValue.board).indexOf(action.payload.target) === -1) throw new Error('payload.target has unexpected value');
     if (['x', 'o'].indexOf(action.payload.value) === -1) throw new Error('payload.value is invalid. It expects `x` or `o`');
-    if (state.board[action.payload.target] !== null) throw new Error('target is not empty');
+    if (state.board[action.payload.target] !== null) {
+      console.log(state.board[action.payload.target], action.payload);
+      throw new Error('target is not empty');
+    }
 
       const newState = {...state};
       if (state.state === GAME_STATE.PAUSE)
@@ -72,14 +86,19 @@ export const dispatcher = (state, action) => {
       
       newState.board[action.payload.target] = action.payload.value;
       newState.round += 1;
+      roundMatrix[action.payload.target] = newState.round;
 
       if (action.payload.value === 'o') newState.state = GAME_STATE.OPPONENTS_TURN;
       if (action.payload.value === 'x') newState.state = GAME_STATE.YOUR_TURN;
 
+      Object.keys(roundMatrix).forEach((key) => {
+        if (roundMatrix[key] <= newState.round - disappearAfter - disappearAfter + 1)
+          newState.board[key] = null;
+      });
+
       const result = checkResult(newState.board);
       const won = result && result.winner === 'o';
       const lost = result && result.winner === 'x';
-      const draw = !result && newState.round === 12;
 
       if (won || lost) {
         newState.winnerCells = result.cells;
@@ -94,8 +113,6 @@ export const dispatcher = (state, action) => {
         newState.score.opponent += 1;
         newState.state = GAME_STATE.DEFEAT;
       }
-
-      if (draw) newState.state = GAME_STATE.DRAW;
 
       return newState;
     }
@@ -128,6 +145,7 @@ export const dispatcher = (state, action) => {
         a1: null, b1: null, c1: null, d1: null,
         a2: null, b2: null, c2: null, d2: null,
         a3: null, b3: null, c3: null, d3: null,
+        a4: null, b4: null, c4: null, d4: null,
       };
       newState.state = GAME_STATE.IDLE;
       newState.winnerCells = [];
@@ -142,6 +160,7 @@ export const dispatcher = (state, action) => {
         a1: null, b1: null, c1: null, d1: null,
         a2: null, b2: null, c2: null, d2: null,
         a3: null, b3: null, c3: null, d3: null,
+        a4: null, b4: null, c4: null, d4: null,
       };
 
       newState.winnerCells = [];

@@ -1,33 +1,29 @@
 import { GAME_DIFFICULTIES } from '../contexts/gameState';
 
-const pairs = [
+export const pairs = [
   // rows
-  ['a1', 'b1', 'c1'],
-  ['a2', 'b2', 'c2'],
-  ['a3', 'b3', 'c3'],
+  ['a1', 'b1', 'c1', 'd1'],
+  ['a2', 'b2', 'c2', 'd2'],
+  ['a3', 'b3', 'c3', 'd3'],
+  ['a4', 'b4', 'c4', 'd4'],
 
   // columns
-  ['a1', 'a2', 'a3'],
-  ['b1', 'b2', 'b3'],
-  ['c1', 'c2', 'c3'],
+  ['a1', 'a2', 'a3', 'a4'],
+  ['b1', 'b2', 'b3', 'b4'],
+  ['c1', 'c2', 'c3', 'c4'],
+  ['d1', 'd2', 'd3', 'd4'],
 
   // transversal
-  ['a1', 'b2', 'c3'],
-  ['a3', 'b2', 'c1'],
-
-  ['d1', 'd2', 'd3'],
-  ['b1', 'c1', 'd1'],
-  ['b2', 'c2', 'd2'],
-  ['b3', 'c3', 'd3'],
-  ['b1', 'c2', 'd3'],
-  ['d1', 'c2', 'b3'],
+  ['a1', 'b2', 'c3', 'd4'],
+  ['a4', 'b3', 'c2', 'd1'],
 ];
 
 function checkImminentWin(board) {
-  function isImminentWin(xCellname, yCellname, zCellname) {
+  function isImminentWin(xCellname, yCellname, zCellname, wCellname) {
     const x = board[xCellname];
     const y = board[yCellname];
     const z = board[zCellname];
+    const w = board[wCellname];
     
     let nOfX = 0;
     let nOfNull = 0;
@@ -35,15 +31,18 @@ function checkImminentWin(board) {
     if (x === 'x') nOfX++;
     if (y === 'x') nOfX++;
     if (z === 'x') nOfX++;
+    if (w === 'x') nOfX++;
     if (x === null) nOfNull++;
     if (y === null) nOfNull++;
     if (z === null) nOfNull++;
+    if (w === null) nOfNull++;
 
-    if (nOfX === 2 && nOfNull === 1) {
+    if (nOfX === 3 && nOfNull === 1) {
       return [
         { name: xCellname, value: x },
         { name: yCellname, value: y },
         { name: zCellname, value: z },
+        { name: wCellname, value: w },
       ].find(c => c.value === null).name;
     }
 
@@ -60,10 +59,11 @@ function checkImminentWin(board) {
 }
 
 function preventImminentDanger(board) {
-  function isImminentDanger(xCellname, yCellname, zCellname) {
+  function isImminentDanger(xCellname, yCellname, zCellname, wCellname) {
     const x = board[xCellname];
     const y = board[yCellname];
     const z = board[zCellname];
+    const w = board[wCellname];
     
     let nOfO = 0;
     let nOfNull = 0;
@@ -71,15 +71,18 @@ function preventImminentDanger(board) {
     if (x === 'o') nOfO++;
     if (y === 'o') nOfO++;
     if (z === 'o') nOfO++;
+    if (w === 'o') nOfO++;
     if (x === null) nOfNull++;
     if (y === null) nOfNull++;
     if (z === null) nOfNull++;
+    if (w === null) nOfNull++;
 
-    if (nOfO === 2 && nOfNull === 1) {
+    if (nOfO === 3 && nOfNull === 1) {
       return [
         { name: xCellname, value: x },
         { name: yCellname, value: y },
         { name: zCellname, value: z },
+        { name: wCellname, value: w },
       ].find(c => c.value === null).name;
     }
 
@@ -96,10 +99,11 @@ function preventImminentDanger(board) {
 }
 
 function checkPossibleWin(board) {
-  function isPossibleWin(xCellname, yCellname, zCellname) {
+  function isPossibleWin(xCellname, yCellname, zCellname, wCellname) {
     const x = board[xCellname];
     const y = board[yCellname];
     const z = board[zCellname];
+    const w = board[wCellname];
     
     let nOfX = 0;
     let nOfNull = 0;
@@ -107,15 +111,18 @@ function checkPossibleWin(board) {
     if (x === 'x') nOfX++;
     if (y === 'x') nOfX++;
     if (z === 'x') nOfX++;
+    if (w === 'x') nOfX++;
     if (x === null) nOfNull++;
     if (y === null) nOfNull++;
     if (z === null) nOfNull++;
+    if (w === null) nOfNull++;
 
-    if (nOfX === 1 && nOfNull === 2) {
+    if (nOfX === 2 && nOfNull === 2) {
       return [
         { name: xCellname, value: x },
         { name: yCellname, value: y },
         { name: zCellname, value: z },
+        { name: wCellname, value: w },
       ].find(c => c.value === null).name;
     }
 
@@ -133,7 +140,9 @@ function checkPossibleWin(board) {
 
 function checkTheMiddle(board) {
   return board.b2 === null
-    ? 'b2' : board.c2 === null
+    ? 'b2' : board.c3 === null
+    ? 'c3' : board.b3 === null
+    ? 'b3' : board.c2 === null
     ? 'c2' : false;
 }
 
