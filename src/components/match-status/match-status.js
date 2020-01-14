@@ -60,13 +60,10 @@ function MatchStatus() {
     }
   }
 
-  return <div className="status">
+  return <div className="match-status">
     <div>
       <div>
         {phrase()}
-      </div>
-      <div>
-        <ResetButton />
       </div>
     </div>
   </div>
