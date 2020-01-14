@@ -74,7 +74,7 @@ function Status() {
         {phrase()}
       </div>
       <div>
-        <ResetButton />
+        {ResetButton()}
       </div>
     </div>
   </div>

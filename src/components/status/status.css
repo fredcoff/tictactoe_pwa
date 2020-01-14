@@ -9,7 +9,6 @@
   font-size: 16px;
   border-radius: 4px;
   height: 30px;
-  color: #FFF !important;
   margin-top: 8px;
   background-color: var(--primary-color);
   border: none;
@@ -17,6 +16,22 @@
   cursor: pointer;
 }
 
+.status__reset-btn:not(:hover) {
+  color: #FFF !important;
+}
+
+.status__reset-btn:active {
+  box-shadow: none;
+}
+
 .status__reset-btn--red {
   background-color: var(--secondary-color);
+}
+
+.status__reset-btn--red:not(:hover) {
+  color: #FFF !important;
+}
+
+.status__reset-btn--red:active {
+  box-shadow: none;
 }

@@ -24,6 +24,7 @@ function Score() {
 
     // Get score number and hide it
     const $n = document.getElementById(`${you !== oScore ? 'o' : 'x'}-score`);
+    // $n.classList.remove('score__number--hide');
     $n.classList.add('score__number--hide');
 
     transitionEnd($n)
@@ -47,7 +48,12 @@ function Score() {
         // Number will now be shown
         $n.classList.remove('score__number--will-update');
       });
-  }, [gameState, oScore, setOScore, xScore, setXScore]);
+
+    return () => {
+      $n.classList.remove('score__number--hide');
+      $n.classList.remove('score__number--will-update');
+    };
+  }, [gameState.score.you, gameState.score.opponent, oScore, setOScore, xScore, setXScore]);
 
   return (
     <div className="score">
