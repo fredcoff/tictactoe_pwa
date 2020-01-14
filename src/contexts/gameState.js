@@ -51,6 +51,14 @@ export const defaultValue = {
   difficulty: localStorage.getItem('difficulty') || GAME_DIFFICULTIES.HARD,
 };
 
+const roundMatrix = {
+  a1: 0, b1: 0, c1: 0,
+  a2: 0, b2: 0, c2: 0,
+  a3: 0, b3: 0, c3: 0,
+};
+
+const disappearAfter = 4;
+
 export const dispatcher = (state, action) => {
   switch (action.type) {
 
@@ -72,14 +80,19 @@ export const dispatcher = (state, action) => {
       
       newState.board[action.payload.target] = action.payload.value;
       newState.round += 1;
+      roundMatrix[action.payload.target] = newState.round;
 
       if (action.payload.value === 'o') newState.state = GAME_STATE.OPPONENTS_TURN;
       if (action.payload.value === 'x') newState.state = GAME_STATE.YOUR_TURN;
 
+      Object.keys(roundMatrix).forEach((key) => {
+        if (roundMatrix[key] <= newState.round - disappearAfter - disappearAfter + 1)
+          newState.board[key] = null;
+      });
+
       const result = checkResult(newState.board);
       const won = result && result.winner === 'o';
       const lost = result && result.winner === 'x';
-      const draw = !result && newState.round === 9;
 
       if (won || lost) {
         newState.winnerCells = result.cells;
@@ -94,8 +107,6 @@ export const dispatcher = (state, action) => {
         newState.score.opponent += 1;
         newState.state = GAME_STATE.DEFEAT;
       }
-
-      if (draw) newState.state = GAME_STATE.DRAW;
 
       return newState;
     }
