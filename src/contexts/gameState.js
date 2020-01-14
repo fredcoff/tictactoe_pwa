@@ -8,6 +8,7 @@ export const GAME_STATE = {
   WIN: 'WIN',
   DEFEAT: 'DEFEAT',
   DRAW: 'DRAW',
+  PAUSE: 'PAUSE',
   MATCH_WIN: 'MATCH_WIN',
   MATCH_DEFEAT: 'MATCH_DEFEAT',
   MATCH_DRAW: 'MATCH_DRAW',
@@ -20,6 +21,7 @@ export const GAME_STATE_ACTION_TYPE = {
   MATCH_RESET: 'MATCH_RESET',
   RESET_SCORE: 'RESET_SCORE',
   CHANGE_DIFFICULTY: 'CHANGE_DIFFICULTY',
+  TIMER: 'TIMER',
 };
 
 export const GAME_DIFFICULTIES = {
@@ -28,6 +30,8 @@ export const GAME_DIFFICULTIES = {
   HARD: 'HARD',
 };
 
+const TIME_LIMIT = 300;
+
 export const defaultValue = {
   score: {
     you: 0,
@@ -35,6 +39,7 @@ export const defaultValue = {
   },
   match: 0,
   matchState: GAME_STATE.MATCH_IN,
+  timeLeft: TIME_LIMIT,
   round: 0,
   board: {
     a1: null, b1: null, c1: null,
@@ -57,8 +62,14 @@ export const dispatcher = (state, action) => {
     if (Object.keys(defaultValue.board).indexOf(action.payload.target) === -1) throw new Error('payload.target has unexpected value');
     if (['x', 'o'].indexOf(action.payload.value) === -1) throw new Error('payload.value is invalid. It expects `x` or `o`');
     if (state.board[action.payload.target] !== null) throw new Error('target is not empty');
-    
+
       const newState = {...state};
+      if (state.state === GAME_STATE.PAUSE)
+        return newState;
+      if (state.state === GAME_STATE.IDLE && action.payload.value === 'x') {
+        return newState;
+      }
+      
       newState.board[action.payload.target] = action.payload.value;
       newState.round += 1;
 
@@ -86,17 +97,24 @@ export const dispatcher = (state, action) => {
 
       if (draw) newState.state = GAME_STATE.DRAW;
 
-      if (won || lost || draw) {
-        newState.match += 1;
+      return newState;
+    }
 
-        if (newState.match === 3 || Math.abs(newState.score.you - newState.score.opponent) > 1) {
-          if (newState.score.you > newState.score.opponent)
-            newState.matchState = GAME_STATE.MATCH_WIN;
-          else if (newState.score.you < newState.score.opponent)
-            newState.matchState = GAME_STATE.MATCH_DEFEAT;
-          else
-            newState.matchState = GAME_STATE.MATCH_DRAW;
-        }
+    case GAME_STATE_ACTION_TYPE.TIMER:
+    {
+      const newState = {...state};
+
+      newState.timeLeft = state.timeLeft - 1;
+
+      if (newState.timeLeft === 0) {
+        if (newState.score.you > newState.score.opponent)
+          newState.matchState = GAME_STATE.MATCH_WIN;
+        else if (newState.score.you < newState.score.opponent)
+          newState.matchState = GAME_STATE.MATCH_DEFEAT;
+        else
+          newState.matchState = GAME_STATE.MATCH_DRAW;
+
+        newState.state = GAME_STATE.PAUSE;
       }
 
       return newState;

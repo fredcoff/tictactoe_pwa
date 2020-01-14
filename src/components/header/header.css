@@ -1,0 +1,31 @@
+.header-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-timer {
+  font-size: 20px;
+}
+
+.header-status__reset-btn {
+  font-size: 16px;
+  border-radius: 4px;
+  height: 30px;
+  background-color: var(--primary-color);
+  border: none;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, .3);
+  cursor: pointer;
+}
+
+.header-status__reset-btn:not(:hover) {
+  color: #FFF !important;
+}
+
+.header-status__reset-btn:active {
+  box-shadow: none;
+}
+
+.hidden {
+  visibility: hidden;
+}

@@ -1,6 +1,6 @@
 .game {
   display: grid;
   width: 256px;
-  grid-template-rows: 50px 256px 50px 50px;
+  grid-template-rows: 50px 50px 256px 50px 20px;
   grid-gap: 16px;
 }
