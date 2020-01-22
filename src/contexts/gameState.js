@@ -36,12 +36,12 @@ function shuffle(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
-function makeBlacks(board) {
+function makeFirsts(board) {
   const keys = Object.keys(board);
   
   shuffle(keys);
-  board[keys[0]] = 'b';
-  board[keys[1]] = 'b';
+  board[keys[0]] = 'o';
+  board[keys[1]] = 'x';
 
   return board;
 }
@@ -56,7 +56,7 @@ export const defaultValue = {
   matchState: GAME_STATE.MATCH_IN,
   timeLeft: TIME_LIMIT,
   round: 0,
-  board: makeBlacks({
+  board: makeFirsts({
     a1: null, b1: null, c1: null, d1: null,
     a2: null, b2: null, c2: null, d2: null,
     a3: null, b3: null, c3: null, d3: null,
@@ -139,7 +139,7 @@ export const dispatcher = (state, action) => {
     {
       const newState = {...state};
       newState.round = 0;
-      newState.board = makeBlacks({
+      newState.board = makeFirsts({
         a1: null, b1: null, c1: null, d1: null,
         a2: null, b2: null, c2: null, d2: null,
         a3: null, b3: null, c3: null, d3: null,
@@ -153,7 +153,7 @@ export const dispatcher = (state, action) => {
     {
       const newState = {...defaultValue};
 
-      newState.board = makeBlacks({
+      newState.board = makeFirsts({
         a1: null, b1: null, c1: null, d1: null,
         a2: null, b2: null, c2: null, d2: null,
         a3: null, b3: null, c3: null, d3: null,
