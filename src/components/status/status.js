@@ -17,7 +17,7 @@ function Status() {
     
     switch (gameState.state) {
       case GAME_STATE.IDLE:
-        return 'Whenever you\'re ready!';
+        return 'Let\'s go!';
       case GAME_STATE.YOUR_TURN:
         return 'Your turn!';
       case GAME_STATE.WIN:
